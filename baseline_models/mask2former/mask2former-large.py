@@ -295,7 +295,7 @@ def main(seed=0):
     )
 
     # Start training
-    trainer.train()#resume_from_checkpoint=True)
+    trainer.train()
 
 if __name__=="__main__":
     seed= int(sys.argv[1])

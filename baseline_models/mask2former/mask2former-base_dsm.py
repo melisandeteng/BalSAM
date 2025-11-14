@@ -35,9 +35,8 @@ from transformers import TrainingArguments, Trainer
 #torch.manual_seed(0)
 
 # Set the environment variable
-os.environ["COMET_API_KEY"] = "JAQ6zQMoTH7snvbIkpjeBswPW"
-os.environ["COMET_WORKSPACE"]="melisandeteng"
-
+os.environ["COMET_API_KEY"] = YOUR_COMET_API_KEY
+os.environ["COMET_WORKSPACE"]= YOUR_COMET_WORKSPACE
 # if you haven't logged in or set an environment variable externally.
 # Choose a pre-trained Mask2Former model
 # For instance segmentation, models pre-trained on COCO are good starting points.
@@ -411,8 +410,6 @@ trainer = Trainer(
 # Start training
 trainer.train()
 
-if __name__==main():
-    os.environ["COMET_API_KEY"] = "JAQ6zQMoTH7snvbIkpjeBswPW"
-    os.environ["COMET_WORKSPACE"]="melisandeteng"
+if __name__=="__main__":
 
     print("training")

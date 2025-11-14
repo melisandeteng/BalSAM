@@ -35,8 +35,8 @@ from transformers import TrainingArguments, Trainer
 
 
 # Set the environment variable
-os.environ["COMET_API_KEY"] = "JAQ6zQMoTH7snvbIkpjeBswPW"
-os.environ["COMET_WORKSPACE"]="melisandeteng"
+os.environ["COMET_API_KEY"] = YOUR_COMET_API_KEY
+os.environ["COMET_WORKSPACE"]= YOUR_COMET_WORKSPACE
 
 # if you haven't logged in or set an environment variable externally.
 # Choose a pre-trained Mask2Former model
@@ -416,8 +416,7 @@ def main(seed):
     trainer.train()
     
 if __name__=="__main__":
-    os.environ["COMET_API_KEY"] = "JAQ6zQMoTH7snvbIkpjeBswPW"
-    os.environ["COMET_WORKSPACE"]="melisandeteng"
+
     seed= int(sys.argv[1])
     main(seed)
     print("training")

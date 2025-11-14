@@ -293,5 +293,5 @@ trainer = Trainer(
 # Start training
 trainer.train() #resume_from_checkpoint=True)
 
-if __name__==main():
+if __name__=="__main__":
     print("training")
