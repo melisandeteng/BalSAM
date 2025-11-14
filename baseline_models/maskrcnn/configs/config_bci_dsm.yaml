@@ -1,0 +1,42 @@
+root_path: "/ROOT_PATH/"
+save_ckpt_path: "/SAVE_PATH"
+comet: True
+comet_project: "trees_bci_neurips"
+comet_exp_name:   #"maskrcnn_dsm_train_scratch_max_norm"
+comet_tags: ["dsm", "bci", "maskrcnn"]
+
+dataset: "bci"
+
+load_ckpt_path:
+
+model_version: "resnet50dsm" #"resnet50scratch"   #resnet50 or resnet50_v2
+
+dsm_normalization: "max"
+
+batch_size: 4
+num_workers: 0
+
+lr: 0.0001
+momentum: 0.9
+weight_decay: 0.0005
+
+lr_scheduler_step_size: 3
+lr_scheduler_gamma: 0.1
+
+num_epochs: 300
+save_every_epochs: 20
+log_images_every_epochs: 20
+num_classes: 32
+
+threshold_score: 0.3
+
+apply_nms: True
+weights_loss:
+hierarchical_loss:
+seed: 0
+percentage: 1
+means_dsm:
+stds_dsm:
+
+with_dsm: True
+val_nms: False

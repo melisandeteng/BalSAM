@@ -1,0 +1,41 @@
+root_path: "/network/projects/trees-co2/final_tiles/" #"/ROOT_PATH/" path to root folder of tiles/
+
+save_ckpt_path: "/SAVE_PATH/"
+comet: True
+comet_project: "trees_clean"
+comet_exp_name: #"maskrcnn_dsm_train_scratch_max_norm"
+comet_tags: ["dsm", "pretrained", "maxnorm", "maskrcnn"]
+
+dataset: "quebec_plantations"
+
+load_ckpt_path: #"/PATH_TO_MASKRCNN_CHECKPOINT/best_0.pt" once it has been trainbed
+
+model_version: "resnet50dsm" #"resnet50scratch"   #resnet50 or resnet50_v2
+
+dsm_normalization: "max"
+
+json_train: "/network/projects/trees-co2/final_tiles/merged_annots_dsm_train_new_maskrcnn.json"
+json_val: "/network/projects/trees-co2/final_tiles/merged_annots_dsm_val_new_maskrcnn.json"
+json_test:  "/network/projects/trees-co2/final_tiles/merged_annots_dsm_test_new_maskrcnn.json"
+
+batch_size: 8
+num_workers: 0
+
+lr: 0.0001
+momentum: 0.9
+weight_decay: 0.0005
+
+lr_scheduler_step_size: 3
+lr_scheduler_gamma: 0.1
+
+num_epochs: 100
+save_every_epochs: 10
+log_images_every_epochs: 5
+num_classes: 10
+
+threshold_score: 0.3
+
+apply_nms: True
+
+seed: 0
+percentage: 1
