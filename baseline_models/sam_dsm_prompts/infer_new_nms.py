@@ -1,18 +1,15 @@
 import os
 from pathlib import Path
-
-import cv2
 import numpy as np
 import torch
 from dataset import SAMTreesDataset
 from geodataset.aggregator import Aggregator
-from segment_anything import SamAutomaticMaskGenerator, sam_model_registry
+from segment_anything import sam_model_registry
+from segment_anything.predictor import SamPredictor
 from shapely import Polygon
 from skimage.measure import find_contours
-from torchvision.utils import draw_segmentation_masks
 from tqdm import tqdm
 import argparse
-
 
 def mask_to_polygon(mask: np.ndarray, simplify_tolerance: float = 1.0) -> Polygon:
     """
@@ -63,52 +60,13 @@ def mask_to_polygon(mask: np.ndarray, simplify_tolerance: float = 1.0) -> Polygo
     return simplified_polygon
 
 
-def get_ground_truth_viz(image, target):
-    """
-    image: image tensor
-    target: segmentation prediction target from maskRCNN dictionary with "boxed", "masks", "label"
-    """
-    im = draw_segmentation_masks(
-        image.cpu(), torch.Tensor(target.cpu()).type(torch.bool)
-    )
-    return im
-
-
-def get_preds_viz(image, preds, scores, threshold=0):
-    """
-    image: image tensor
-    preds: segmentation prediction from maskRCNN dictionary with "boxed", "masks", "label"
-    threshold: threshold of score under which predictions will be ignored
-    """
-    indices = torch.where(scores > threshold)
-    preds = preds[indices]
-    im = draw_segmentation_masks(image.cpu(), preds.cpu())
-    return im
-
-
-def load_image(image_path: str) -> np.ndarray:
-    """
-    Loads the image.
-
-    Args:
-        image_path (str): The path to the image.
-
-    Returns:
-        image (numpy.ndarray): The loaded image.
-    """
-    # loading the image
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    return image
-
-
-def infer(
-    sam_checkpoint="/network/projects/trees-co2/sam_vit_h_4b8939.pth",
+def infer_test(
+    sam_checkpoint="/network/scratch/XXXX-1/XXXX-2/sam_ckpt/sam_vit_h_4b8939.pth",
     root_path="/network/projects/trees-co2/dataset/",
+    height_prompts_path="/network/projects/trees-co2/experiments/segmate_height_prompts/",
     fold="valid",
     points_per_side=32,
-    output_path="/network/projects/trees-co2/sam_automatic_preds_test_nms/",
+    output_path="/network/projects/trees-co2/sam_automatic_height_prompts_nms_test_sbl/",
 ):
 
     model_type = "vit_h"
@@ -116,28 +74,41 @@ def infer(
     device = "cuda"
     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
     sam = sam.to(device=device)
-    mask_generator = SamAutomaticMaskGenerator(
-        sam, points_per_side, box_nms_thresh=0.5, pred_iou_thresh=0.6
+    predictor = SamPredictor(sam)
+
+    val_dataset = SAMTreesDataset(
+        fold=fold, root_path=root_path, height_prompts_path=height_prompts_path
     )
 
-    val_dataset = SAMTreesDataset(fold=fold, root_path=root_path)
+    print("FILES USED", val_dataset.cocos_detected)
     val_dataloader = torch.utils.data.DataLoader(
         val_dataset, batch_size=1, shuffle=False
     )
-    # TODO: extended summary include IoU computation taking for each ground truth the argmax over the predictions.
+    print("Number of tiles", len(val_dataloader))
+
+    counter = 0
 
     for i, elem in tqdm(enumerate(val_dataloader)):
 
         img, label = elem
-
-        img = img.squeeze(0)
-        p = mask_generator.generate(np.transpose(img.numpy(), (1, 2, 0)))
-
-        polygons = [mask_to_polygon(u["segmentation"]) for u in p]
-
-        polygons_scores = [u["predicted_iou"] for u in p]
-        tiles_paths = [Path(label["image_path"][0])]
+        print("image", i)
         try:
+            img = img.squeeze(0)
+            predictor.set_image(np.array(img).transpose(1, 2, 0))
+
+            points = label["prompts"].squeeze(0)
+            masks, confidence, _ = predictor.predict_torch(
+                point_coords=points.unsqueeze(1).cuda(),
+                point_labels=torch.ones(label["prompts"].shape[1]).unsqueeze(-1).cuda(),
+                multimask_output=False,
+            )
+
+            masks = masks.squeeze(1)
+            polygons = [mask_to_polygon(mask.cpu()) for mask in masks]
+            polygons_scores = confidence
+
+            tiles_paths = [Path(label["image_path"][0])]
+
             Aggregator.from_polygons(
                 output_path=Path(
                     os.path.join(
@@ -148,7 +119,7 @@ def infer(
                 ),
                 tiles_paths=tiles_paths,
                 polygons=[polygons],
-                scores=[polygons_scores],
+                scores=[polygons_scores.cpu()],
                 classes=[0 for i in range(len(polygons))],
                 scores_weights=None,
                 score_threshold=0.5,
@@ -156,30 +127,35 @@ def infer(
                 nms_algorithm="iou",
             )
         except:
-            #Just to keep track of 
-            with open("nmsfailed_sbl_10.txt", "a") as f:
-                f.write(f"{label['image_path'][0]}")
-                f.write("\n")
+            print("Problem", label["image_path"][0])
+        counter += 1
 
-
-    
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('root_path', help='Path to the root folder where tiles are')
-    parser.add_argument('output_path', help='Path where to save the predictions')
-    parser.add_argument('--points_per_side', default=10, help="number of points on automatic SAM grid")
+    parser.add_argument('height_prompts_path', help='Path where to save the predictions')
     parser.add_argument('--fold', default="test", help="Split fold")
+    parser.add_argument('--output_path', help="Path where to save predictions")
     args = parser.parse_args()
 
     sam_checkpoint = "/network/projects/trees-co2/sam_vit_h_4b8939.pth"
-    root_path = Path(args.root_path)
-    infer(
+
+    # indicate root path to tilerized dataset
+    root_path = Path(
+       args.root_path
+    )
+    height_prompts_path = Path(
+        args.height_prompts_path
+    )
+    fold = "test"
+    points_per_side = 100
+    infer_test(
         sam_checkpoint,
         root_path,
+        height_prompts_path,
         args.fold,
-        args.points_per_side,
-        args.output_path,
+        points_per_side=points_per_side,
+        output_path=args.output_path
     )
-    print("Done")
