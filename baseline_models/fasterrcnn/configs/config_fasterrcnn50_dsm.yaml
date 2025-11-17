@@ -1,0 +1,44 @@
+root_path:  ROOT_PATH_TO_TILES 
+log_dir: YOUR_LOG_DIR
+wandb: True
+wandb_project: "quebec_trees_fasterrcnnresnet50"
+wandb_entity: YOUR_WANDB_ENTITY
+load_ckpt_path: YOUR_CHECKPOINT_PATH #"best_model.pt"
+model_version: "resnet50dsm"
+sam_version: "facebook/sam-vit-huge"
+
+dataset: "quebec_trees"
+
+dsm_normalization: "max"
+json_train: TRAIN_ANNOTATION_JSON_PATH #"merged_annots_dsm_train_new.json"
+json_val: VAL_ANNOTATION_JSON_PATH  #"merged_annots_dsm_val_new.json"
+json_test: TEST_ANNOTATION_JSON_PATH #"merged_annots_dsm_test_new.json"
+
+batch_size: 16
+num_workers: 4
+
+lr: 0.0001
+momentum: 0.9
+weight_decay: 0.0005
+
+exponentialLR_gamma: 0.97  # Initially 0.9
+scheduler_step: 10
+
+num_epochs: 200
+sam_loop_evey_epochs: 30
+save_every_epochs: 10
+log_images_every_epochs: 10
+num_classes: 19
+
+threshold_score: 0.1
+nms_score: 0.3
+
+apply_nms: True
+seed: 0
+percentage: 1
+
+with_dsm: True
+comet: True
+comet_project: "trees_sbl"
+comet_tags: ["fasterrcnn", "dsm", "boxscore"]
+

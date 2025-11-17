@@ -1,0 +1,21 @@
+root_path:  ROOT_PATH_TO_TILES #"/network/projects/trees-co2/final_tiles"
+
+log_dir: YOUR_LOG_DIR
+wandb: True
+wandb_project: "quebec_plantations_fasterrcnnresnet50"
+wandb_entity: YOUR_WANDB_ENTITY
+load_ckpt_path: YOUR_CHECKPOINT_PATH #"best_model.pt"
+model_version: "resnet50"   #resnet50 or resnet50_v2
+sam_version: "facebook/sam-vit-huge"  # "facebook/sam-vit-large"
+with_dsm: False
+
+batch_size: 32
+num_workers: 4
+num_classes: 10
+
+threshold_score: 0.3
+nms_score: 1.
+
+apply_nms: True
+seed: 0
+percentage: 1
