@@ -19,6 +19,9 @@ if __name__ == "__main__":
     )
     DSM_ORTHOS_SAVE_DIR = TREES_CO2_DIR / "dsm_orthos_aligned"
 
+    if not os.path.exists(DSM_ORTHOS_SAVE_DIR):
+        os.makedirs(DSM_ORTHOS_SAVE_DIR)
+
     parcelles = ["zone1", "zone2", "zone3"]
     name_orthos = os.listdir(ORTHO_DIR)
     name_dsm_orthos = os.listdir(DSM_ORTHO_DIR)

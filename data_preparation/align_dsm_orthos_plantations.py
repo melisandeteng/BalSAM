@@ -17,7 +17,8 @@ if __name__ == "__main__":
     ORTHO_DIR = TREES_CO2_DIR / "orthos"
     DSM_ORTHO_DIR = pathlib.Path("/network/projects/trees-co2/Donnees_finales/DSM")
     DSM_ORTHOS_SAVE_DIR = TREES_CO2_DIR / "dsm_orthos_aligned_nearest_take2"
-
+    if not os.path.exists(DSM_ORTHOS_SAVE_DIR):
+        os.makedirs(DSM_ORTHOS_SAVE_DIR)
     parcelles = [
         "afcahoule",
         "afcamoisan",
