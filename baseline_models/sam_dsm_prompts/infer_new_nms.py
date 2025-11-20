@@ -65,7 +65,6 @@ def infer_test(
     root_path="/network/projects/trees-co2/dataset/",
     height_prompts_path="/network/projects/trees-co2/experiments/segmate_height_prompts/",
     fold="valid",
-    points_per_side=32,
     output_path="/network/projects/trees-co2/sam_automatic_height_prompts_nms_test_sbl/",
 ):
 
@@ -150,12 +149,11 @@ if __name__ == "__main__":
         args.height_prompts_path
     )
     fold = "test"
-    points_per_side = 100
+    
     infer_test(
         sam_checkpoint,
         root_path,
         height_prompts_path,
         args.fold,
-        points_per_side=points_per_side,
         output_path=args.output_path
     )

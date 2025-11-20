@@ -1,6 +1,6 @@
 root_path:  "/network/projects/trees-co2/final_tiles/" #path to folder with json annotation files and tiles folders.
 
-save_ckpt_path: "/SAVE_PATH/"
+save_ckpt_path: "/network/scratch/t/tengmeli/test_balsam_release/"
 comet: True
 comet_project: "trees_clean"
 comet_exp_name:
@@ -25,8 +25,8 @@ log_images_every_epochs: 5
 num_classes: 10
 
 threshold_score: 0.3
-
-weights_loss:
+weights_loss: #empty or indicate weights for each class for the weighted cross entropy loss ablation
+hierarchical_loss: #empty or "quebec_trees" to run the hierarchical loss ablation on the SBL dataset. This is loss is only implemented for the SBL dataset.
 
 apply_nms: True
 percentage: 1

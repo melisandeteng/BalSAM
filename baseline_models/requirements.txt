@@ -1,0 +1,15 @@
+addict
+comet_ml
+geodataset @ git+https://github.com/hugobaudchon/geodataset.git@6e201e8231d6f329343774b73862d407e02035c8
+geopandas
+numpy
+matplotlib
+omegaconf
+pandas
+pillow
+pycocotools
+segment_anything @ git+https://github.com/facebookresearch/segment-anything.git@dca509fe793f601edb92606367a655c15ac00fdf
+torch
+torchvision
+torchmetrics
+wandb
