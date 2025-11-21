@@ -20,6 +20,7 @@ It contains the code relevant for replicating the experiments using the followin
 - Mask R-CNN+SAM
 - Faster R-CNN
 - Mask2Former
+
 Each subfolder model contains their corresponding relevant dataloading code. 
 
 ### RSPrompter and BalSAM models
