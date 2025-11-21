@@ -4,7 +4,10 @@ from pathlib import Path
 from geodataset.aoi import AOIFromPackageConfig
 from geodataset.tilerize import LabeledRasterTilerizer
 
-with open("../geodataset_utils/categories_subset_family.json", "r") as f:
+
+#change paths accordingly
+
+with open("../../data/categories_family_bci.json", "r") as f:
     CATEGORIES = json.load(f)["categories"]
 
 

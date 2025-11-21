@@ -35,8 +35,8 @@ from transformers import TrainingArguments, Trainer
 SEED = 4021
 torch.manual_seed(SEED)
 # Set the environment variable
-os.environ["COMET_API_KEY"] = YOUR_COMET_API_KEY
-os.environ["COMET_WORKSPACE"]= YOUR_COMET_WORKSPACE
+#os.environ["COMET_API_KEY"] = YOUR_COMET_API_KEY
+#os.environ["COMET_WORKSPACE"]= YOUR_COMET_WORKSPACE
 
 # Choose a pre-trained Mask2Former model
 # For instance segmentation, models pre-trained on COCO are good starting points.
@@ -205,7 +205,7 @@ test_dataset = TreesDataset("val",
 
 # Define your training arguments
 training_args = TrainingArguments(
-    output_dir=f"/network/scratch/t/tengmeli/mask2former_fine_tuned_balsam/baseswin_{SEED}",
+    output_dir=f"/network/scratch/t/tengmeli/mask2former_fine_tuned_balsam/baseswin_{SEED}_test",
     per_device_train_batch_size=8, # Adjust based on your GPU memory
     per_device_eval_batch_size=8,
     num_train_epochs=100, # Or more, depending on dataset size and convergence

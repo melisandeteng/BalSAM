@@ -5,6 +5,7 @@ This folder contains scripts to download and prepare the data from the [Quebec P
 This data was prepared with the `geodataset v0.2.2` package.
 Follow the instructions on the [geodataset repository](https://github.com/hugobaudchon/geodataset) to install the package.
 
+You can use the same environment for preprocessing the data as the one used for the baselines that are not RSPrompter based. 
 
 ## Quebec Plantations dataset
 
