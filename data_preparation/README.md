@@ -7,6 +7,17 @@ Follow the instructions on the [geodataset repository](https://github.com/hugoba
 
 You can use the same environment for preprocessing the data as the one used for the baselines that are not RSPrompter based. 
 
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv venv trees_env -p 3.10
+
+source trees_env/bin/activate
+
+uv pip install -r ../baseline_models/requirements.txt 
+```
+
+
 ## Quebec Plantations dataset
 
 - Download `Photogrammetry_Products` and `Vector_Data` folders of the [Quebec Plantations](https://www.frdr-dfdr.ca/repo/dataset/9f10a155-c89f-43ee-9864-da28ca436af6). You can remove data from Serpentin1 and Serpentin2 as they are not used in this study.
