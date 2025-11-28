@@ -4,7 +4,7 @@ This repository contains code to reproduce experiments and results of the paper 
 
 ## Getting started
 
-The code for this project is organized in two main parts. This is because the code for the RSPrompter and BalSAM models was built on top of the [original RSPrompter repository](https://github.com/KyanChen/RSPrompter) which uses the mmdet framework. The other baselines were coded using torchvision and transformers. You can find instructions for each model in their specific READMEs.
+The code for this project is organized in two main parts. This is because the code for the RSPrompter and BalSAM models was built on a fork of the [original RSPrompter repository](https://github.com/KyanChen/RSPrompter) which uses the `mmdet` framework. The other baselines were coded using torchvision and transformers. You can find instructions for each model in their specific READMEs.
 
 Dependencies for each part of the project are detailed in the `baseline_models` and `rsprompter_balsam` folders. 
 
