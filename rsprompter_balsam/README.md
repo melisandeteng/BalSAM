@@ -7,7 +7,7 @@ Modified files from the original repo are marked at the beginning of the file.
 In this repo, you will find code to run the RSPrompter and BalSAM models as well as example configurations files. 
 This part of the project is setup such that metrics and images will be logged in Weights and Biases. 
 
-We suggest to first follow the instructions from the original RSPrompter repository to create your environment (available below). Other dependencies for this project can be installed referring to the `environment.yaml`. Please change the `prefix` accordingly in the `environment.yaml` file.
+We suggest to first follow the instructions from the original RSPrompter repository to create your environment (available below). Other dependencies for this project can be installed referring to the `environment.yaml` file. 
 
 - Examples of configuration files can be found in ```configs/rsprompter/```
 - Train a model with: 
